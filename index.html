@@ -1,0 +1,2564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech TacTix - AI-Powered Digital Transformation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .service-card {
+            transition: all 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .animate-pulse-slow {
+            animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .show {
+            display: block;
+        }
+
+        /* Popup Styles */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .popup-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .popup-overlay.show .popup-content {
+            transform: scale(1);
+        }
+
+        .popup-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+
+        /* Client Logo Styles */
+        .client-logo {
+            transition: all 0.3s ease;
+            filter: grayscale(100%) opacity(0.7);
+        }
+
+        .client-logo:hover {
+            filter: grayscale(0%) opacity(1);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white/95 backdrop-blur-sm shadow-lg fixed w-full z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex items-center space-x-2 cursor-pointer" onclick="showSection('home')">
+                        <div class="bg-gradient-to-r from-blue-600 to-teal-600 p-2 rounded-lg">
+                            <i data-lucide="zap" class="h-6 w-6 text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">
+                            Tech TacTix
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" onclick="showSection('home')" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Home</a>
+                    <a href="#services" onclick="scrollToServices()" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Services</a>
+                    <a href="#about" onclick="scrollToAbout()" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">About</a>
+                    <a href="#clients" onclick="scrollToClients()" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Clients</a>
+                    <a href="#contact" onclick="scrollToContact()" class="bg-gradient-to-r from-blue-600 to-teal-600 text-white px-6 py-2 rounded-full text-sm font-medium hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5">Contact Us</a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button onclick="toggleMobileMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none">
+                        <i data-lucide="menu" class="h-6 w-6" id="mobile-menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden bg-white border-t hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#" onclick="showSection('home'); toggleMobileMenu()" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600">Home</a>
+                <a href="#services" onclick="scrollToServices(); toggleMobileMenu()" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600">Services</a>
+                <a href="#about" onclick="scrollToAbout(); toggleMobileMenu()" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600">About</a>
+                <a href="#clients" onclick="scrollToClients(); toggleMobileMenu()" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600">Clients</a>
+                <a href="#contact" onclick="scrollToContact(); toggleMobileMenu()" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600">Contact Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Success Popup -->
+    <div id="success-popup" class="popup-overlay">
+        <div class="popup-content">
+            <div class="popup-icon">
+                <i data-lucide="check" class="h-8 w-8 text-white"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Submission Successful!</h3>
+            <p class="text-gray-600 mb-4">Thank you for contacting us. Your message has been sent successfully and we'll get back to you soon.</p>
+            <button onclick="closeSuccessPopup()" class="bg-gradient-to-r from-blue-600 to-teal-600 text-white px-6 py-2 rounded-full font-medium hover:shadow-lg transition-all duration-200">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="section">
+            <!-- Hero Section -->
+            <section class="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-teal-50 overflow-hidden">
+                <!-- Background Animation -->
+                <div class="absolute inset-0 bg-[url('https://images.pexels.com/photos/8439093/pexels-photo-8439093.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop')] bg-cover bg-center opacity-5"></div>
+                
+                <!-- Floating Elements -->
+                <div class="absolute top-20 left-10 w-16 h-16 bg-blue-200 rounded-full opacity-20 animate-bounce"></div>
+                <div class="absolute bottom-20 right-10 w-20 h-20 bg-teal-200 rounded-full opacity-20 animate-pulse"></div>
+                <div class="absolute top-1/2 right-20 w-12 h-12 bg-purple-200 rounded-full opacity-20 animate-bounce delay-300"></div>
+
+                <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
+                    <div class="max-w-4xl mx-auto">
+                        <!-- Logo Animation -->
+                        <div class="flex justify-center mb-8">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 p-4 rounded-2xl shadow-2xl transform hover:scale-110 transition-transform duration-300">
+                                <i data-lucide="zap" class="h-12 w-12 text-white"></i>
+                            </div>
+                        </div>
+
+                        <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-teal-600 bg-clip-text text-transparent leading-tight">
+                            Tech TacTix
+                        </h1>
+                        
+                        <p class="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
+                            Accelerating Digital Transformation with 
+                            <span class="text-blue-600 font-semibold"> AI-Powered Solutions</span>
+                        </p>
+                        
+                        <p class="text-lg text-gray-500 mb-12 max-w-3xl mx-auto leading-relaxed">
+                            We help businesses streamline operations, reduce costs, and grow confidently 
+                            with innovative technology solutions, intelligent automation, and expert cloud services.
+                        </p>
+
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                            <button onclick="scrollToServices()" class="bg-gradient-to-r from-blue-600 to-teal-600 text-white px-8 py-4 rounded-full text-lg font-medium hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex items-center space-x-2">
+                                <span>Explore Our Services</span>
+                                <i data-lucide="arrow-right" class="h-5 w-5"></i>
+                            </button>
+                            
+                            <button onclick="scrollToAbout()" class="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-full text-lg font-medium hover:bg-blue-600 hover:text-white transition-all duration-300 transform hover:-translate-y-1">
+                                Learn More
+                            </button>
+                        </div>
+
+                        <!-- Stats -->
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-blue-600 mb-2">2024</div>
+                                <div class="text-gray-500">Founded</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-teal-600 mb-2">AI First</div>
+                                <div class="text-gray-500">Approach</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-purple-600 mb-2">Cloud</div>
+                                <div class="text-gray-500">Native</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-blue-600 mb-2">24/7</div>
+                                <div class="text-gray-500">Support</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section id="about" class="py-20 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                            About <span class="bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">Tech TacTix</span>
+                        </h2>
+                        <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                            Founded in 2024, we're a forward-thinking technology company specializing in 
+                            AI-powered solutions, cloud services, and digital transformation.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                        <div>
+                            <img
+                                src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                alt="Team collaboration"
+                                class="rounded-2xl shadow-2xl transform hover:scale-105 transition-transform duration-300"
+                            />
+                        </div>
+                        
+                        <div class="space-y-6">
+                            <h3 class="text-3xl font-bold text-gray-900">
+                                Empowering Business Growth Through Technology
+                            </h3>
+                            <p class="text-lg text-gray-600 leading-relaxed">
+                                At Tech TacTix, we specialize in creating custom AI and machine learning applications 
+                                tailored to specific business needs, enabling automation, smarter decision-making, 
+                                and enhanced customer experiences.
+                            </p>
+                            <p class="text-lg text-gray-600 leading-relaxed">
+                                Our expertise spans intelligent automation solutions, cloud migration, big data analytics, 
+                                and modern development platforms that help businesses stay competitive in today's 
+                                fast-evolving digital landscape.
+                            </p>
+                            <div class="bg-gradient-to-r from-blue-50 to-teal-50 p-6 rounded-xl border-l-4 border-blue-600">
+                                <p class="text-blue-800 font-medium">
+                                    "We're committed to delivering technology solutions that are not only cutting-edge 
+                                    but also practical and scalable."
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div class="text-center p-6 rounded-xl bg-gradient-to-br from-blue-50 to-teal-50 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i data-lucide="target" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-3">Mission-Driven</h3>
+                            <p class="text-gray-600 leading-relaxed">Dedicated to helping businesses accelerate their digital transformation journey with cutting-edge solutions.</p>
+                        </div>
+                        
+                        <div class="text-center p-6 rounded-xl bg-gradient-to-br from-blue-50 to-teal-50 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i data-lucide="lightbulb" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-3">Innovation First</h3>
+                            <p class="text-gray-600 leading-relaxed">We deliver innovative, AI-powered solutions that streamline operations and drive business growth.</p>
+                        </div>
+                        
+                        <div class="text-center p-6 rounded-xl bg-gradient-to-br from-blue-50 to-teal-50 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i data-lucide="users" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-3">Client-Centric</h3>
+                            <p class="text-gray-600 leading-relaxed">Our expert team works closely with clients to deliver personalized technology solutions that meet specific needs.</p>
+                        </div>
+                        
+                        <div class="text-center p-6 rounded-xl bg-gradient-to-br from-blue-50 to-teal-50 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i data-lucide="shield" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-3">Trust & Security</h3>
+                            <p class="text-gray-600 leading-relaxed">We prioritize security and scalability in every solution we deliver, ensuring long-term business success.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Services Section -->
+            <section id="services" class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                            Our <span class="bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">Services</span>
+                        </h2>
+                        <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                            Comprehensive technology solutions designed to accelerate your digital transformation 
+                            and drive business growth.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                        <!-- AI Solutions -->
+                        <div class="service-card bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group">
+                            <div class="relative h-48 overflow-hidden">
+                                <img
+                                    src="https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                    alt="AI Solutions"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                />
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-3 rounded-full">
+                                    <i data-lucide="brain" class="h-6 w-6 text-blue-600"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-gray-900 mb-3">AI-Powered Solutions</h3>
+                                <p class="text-gray-600 mb-4 leading-relaxed">Custom AI and machine learning applications for automation and smarter decision-making.</p>
+                                
+                                <button onclick="showSection('ai-service')" class="inline-flex items-center space-x-2 text-blue-600 font-medium hover:text-blue-700 transition-colors duration-200 group">
+                                    <span>Read More</span>
+                                    <i data-lucide="arrow-right" class="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Automation -->
+                        <div class="service-card bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group">
+                            <div class="relative h-48 overflow-hidden">
+                                <img
+                                    src="https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                    alt="Automation"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                />
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-3 rounded-full">
+                                    <i data-lucide="cog" class="h-6 w-6 text-blue-600"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-gray-900 mb-3">Intelligent Automation</h3>
+                                <p class="text-gray-600 mb-4 leading-relaxed">AI agents and robotic process automation to streamline workflows and boost efficiency.</p>
+                                
+                                <button onclick="showSection('automation-service')" class="inline-flex items-center space-x-2 text-blue-600 font-medium hover:text-blue-700 transition-colors duration-200 group">
+                                    <span>Read More</span>
+                                    <i data-lucide="arrow-right" class="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Cloud Migration -->
+                        <div class="service-card bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group">
+                            <div class="relative h-48 overflow-hidden">
+                                <img
+                                    src="https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                    alt="Cloud Migration"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                />
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-3 rounded-full">
+                                    <i data-lucide="cloud" class="h-6 w-6 text-blue-600"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-gray-900 mb-3">Cloud Migration & Management</h3>
+                                <p class="text-gray-600 mb-4 leading-relaxed">Expert cloud services for scalable, secure, and cost-effective infrastructure.</p>
+                                
+                                <button onclick="showSection('cloud-service')" class="inline-flex items-center space-x-2 text-blue-600 font-medium hover:text-blue-700 transition-colors duration-200 group">
+                                    <span>Read More</span>
+                                    <i data-lucide="arrow-right" class="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Big Data -->
+                        <div class="service-card bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group">
+                            <div class="relative h-48 overflow-hidden">
+                                <img
+                                    src="https://images.pexels.com/photos/590020/pexels-photo-590020.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                    alt="Big Data"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                />
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-3 rounded-full">
+                                    <i data-lucide="database" class="h-6 w-6 text-blue-600"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-gray-900 mb-3">Big Data & Hadoop</h3>
+                                <p class="text-gray-600 mb-4 leading-relaxed">Transform vast amounts of data into actionable insights for strategic decisions.</p>
+                                
+                                <button onclick="showSection('bigdata-service')" class="inline-flex items-center space-x-2 text-blue-600 font-medium hover:text-blue-700 transition-colors duration-200 group">
+                                    <span>Read More</span>
+                                    <i data-lucide="arrow-right" class="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Low-Code -->
+                        <div class="service-card bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group">
+                            <div class="relative h-48 overflow-hidden">
+                                <img
+                                    src="https://images.pexels.com/photos/270348/pexels-photo-270348.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                    alt="Low-Code Development"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                />
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-3 rounded-full">
+                                    <i data-lucide="code" class="h-6 w-6 text-blue-600"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-gray-900 mb-3">Low-Code/No-Code Development</h3>
+                                <p class="text-gray-600 mb-4 leading-relaxed">Rapid application delivery with reduced costs and enhanced collaboration.</p>
+                                
+                                <button onclick="showSection('lowcode-service')" class="inline-flex items-center space-x-2 text-blue-600 font-medium hover:text-blue-700 transition-colors duration-200 group">
+                                    <span>Read More</span>
+                                    <i data-lucide="arrow-right" class="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Web Development -->
+                        <div class="service-card bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group">
+                            <div class="relative h-48 overflow-hidden">
+                                <img
+                                    src="https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                    alt="Web Development"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                />
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-3 rounded-full">
+                                    <i data-lucide="globe" class="h-6 w-6 text-blue-600"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-gray-900 mb-3">Web & Mobile Development</h3>
+                                <p class="text-gray-600 mb-4 leading-relaxed">Modern, responsive applications built with cutting-edge technologies.</p>
+                                
+                                <button onclick="showSection('webdev-service')" class="inline-flex items-center space-x-2 text-blue-600 font-medium hover:text-blue-700 transition-colors duration-200 group">
+                                    <span>Read More</span>
+                                    <i data-lucide="arrow-right" class="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Outsourcing -->
+                        <div class="service-card bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group">
+                            <div class="relative h-48 overflow-hidden">
+                                <img
+                                    src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                    alt="Outsourcing"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                />
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-3 rounded-full">
+                                    <i data-lucide="users" class="h-6 w-6 text-blue-600"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-gray-900 mb-3">Outsourcing Services</h3>
+                                <p class="text-gray-600 mb-4 leading-relaxed">Skilled professionals to augment your project teams and accelerate delivery.</p>
+                                
+                                <button onclick="showSection('outsourcing-service')" class="inline-flex items-center space-x-2 text-blue-600 font-medium hover:text-blue-700 transition-colors duration-200 group">
+                                    <span>Read More</span>
+                                    <i data-lucide="arrow-right" class="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- SAP Development -->
+                        <div class="service-card bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden group">
+                            <div class="relative h-48 overflow-hidden">
+                                <img
+                                    src="https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                    alt="SAP Development"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                />
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-3 rounded-full">
+                                    <i data-lucide="settings" class="h-6 w-6 text-blue-600"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-gray-900 mb-3">SAP Development</h3>
+                                <p class="text-gray-600 mb-4 leading-relaxed">Optimize enterprise resource planning and streamline business operations.</p>
+                                
+                                <button onclick="showSection('sap-service')" class="inline-flex items-center space-x-2 text-blue-600 font-medium hover:text-blue-700 transition-colors duration-200 group">
+                                    <span>Read More</span>
+                                    <i data-lucide="arrow-right" class="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Our Valuable Clients Section -->
+            <section id="clients" class="py-20 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                            Our <span class="bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">Valuable Clients</span>
+                        </h2>
+                        <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                            We're proud to partner with industry-leading companies who trust us to deliver 
+                            innovative technology solutions that drive their business success.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center">
+                        <!-- Client 1 -->
+                        <div class="flex justify-center">
+                            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 w-full max-w-xs">
+                                <img
+                                    src="https://images.pexels.com/photos/267350/pexels-photo-267350.jpeg?auto=compress&cs=tinysrgb&w=400"
+                                    alt="Client Company 1"
+                                    class="client-logo w-full h-24 object-contain mx-auto"
+                                />
+                                <div class="text-center mt-4">
+                                    <h3 class="text-lg font-semibold text-gray-800">TechCorp Solutions</h3>
+                                    <p class="text-sm text-gray-500">Enterprise Software</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Client 2 -->
+                        <div class="flex justify-center">
+                            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 w-full max-w-xs">
+                                <img
+                                    src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=400"
+                                    alt="Client Company 2"
+                                    class="client-logo w-full h-24 object-contain mx-auto"
+                                />
+                                <div class="text-center mt-4">
+                                    <h3 class="text-lg font-semibold text-gray-800">InnovateLab</h3>
+                                    <p class="text-sm text-gray-500">AI Research</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Client 3 -->
+                        <div class="flex justify-center">
+                            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 w-full max-w-xs">
+                                <img
+                                    src="https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=400"
+                                    alt="Client Company 3"
+                                    class="client-logo w-full h-24 object-contain mx-auto"
+                                />
+                                <div class="text-center mt-4">
+                                    <h3 class="text-lg font-semibold text-gray-800">CloudFirst Inc</h3>
+                                    <p class="text-sm text-gray-500">Cloud Services</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Client 4 -->
+                        <div class="flex justify-center">
+                            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 w-full max-w-xs">
+                                <img
+                                    src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=400"
+                                    alt="Client Company 4"
+                                    class="client-logo w-full h-24 object-contain mx-auto"
+                                />
+                                <div class="text-center mt-4">
+                                    <h3 class="text-lg font-semibold text-gray-800">DataDriven Co</h3>
+                                    <p class="text-sm text-gray-500">Analytics Platform</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Client Testimonial -->
+                    <div class="mt-16 text-center">
+                        <div class="bg-gradient-to-r from-blue-50 to-teal-50 p-8 rounded-2xl max-w-4xl mx-auto">
+                            <div class="flex justify-center mb-6">
+                                <div class="flex space-x-1">
+                                    <i data-lucide="star" class="h-6 w-6 text-yellow-400 fill-current"></i>
+                                    <i data-lucide="star" class="h-6 w-6 text-yellow-400 fill-current"></i>
+                                    <i data-lucide="star" class="h-6 w-6 text-yellow-400 fill-current"></i>
+                                    <i data-lucide="star" class="h-6 w-6 text-yellow-400 fill-current"></i>
+                                    <i data-lucide="star" class="h-6 w-6 text-yellow-400 fill-current"></i>
+                                </div>
+                            </div>
+                            <blockquote class="text-xl text-gray-700 italic mb-6 leading-relaxed">
+                                "Tech TacTix transformed our business operations with their innovative AI solutions. 
+                                Their expertise and dedication to excellence made them the perfect technology partner for our digital transformation journey."
+                            </blockquote>
+                            <div class="flex items-center justify-center space-x-4">
+                                <img
+                                    src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=100"
+                                    alt="Client CEO"
+                                    class="w-12 h-12 rounded-full object-cover"
+                                />
+                                <div class="text-left">
+                                    <p class="font-semibold text-gray-900">Sarah Johnson</p>
+                                    <p class="text-gray-600">CEO, TechCorp Solutions</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Service Detail Sections -->
+        <!-- AI Service -->
+        <section id="ai-service" class="section hidden min-h-screen bg-gray-50 pt-16">
+            <!-- Hero Section -->
+            <section class="relative bg-gradient-to-r from-blue-600 to-teal-600 text-white py-20">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div 
+                    class="absolute inset-0 bg-cover bg-center opacity-20"
+                    style="background-image: url('https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1200')"
+                ></div>
+                
+                <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <button onclick="showSection('home')" class="inline-flex items-center space-x-2 text-white/80 hover:text-white mb-8 transition-colors duration-200">
+                        <i data-lucide="arrow-left" class="h-4 w-4"></i>
+                        <span>Back to Home</span>
+                    </button>
+                    
+                    <div class="max-w-4xl">
+                        <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                            AI-Powered Solutions & Machine Learning
+                        </h1>
+                        <p class="text-xl md:text-2xl text-blue-100 leading-relaxed">
+                            Transform your business with custom AI and machine learning applications designed to automate processes, enhance decision-making, and create exceptional customer experiences.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="py-20 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl font-bold text-gray-900 mb-4">Key Features</h2>
+                        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                            Comprehensive AI solutions designed to meet your specific business requirements
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="brain" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Machine Learning Models</h3>
+                            <p class="text-gray-600 leading-relaxed">Custom ML models tailored to your specific business needs and data patterns.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="zap" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Intelligent Automation</h3>
+                            <p class="text-gray-600 leading-relaxed">AI-powered automation that learns and adapts to optimize business processes.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="trending-up" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Predictive Analytics</h3>
+                            <p class="text-gray-600 leading-relaxed">Advanced analytics to forecast trends and make data-driven decisions.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="shield" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">AI Security</h3>
+                            <p class="text-gray-600 leading-relaxed">Secure AI implementations with robust data protection and privacy measures.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="clock" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Real-time Processing</h3>
+                            <p class="text-gray-600 leading-relaxed">Real-time AI processing for immediate insights and rapid response capabilities.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="users" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">AI Consultation</h3>
+                            <p class="text-gray-600 leading-relaxed">Expert guidance on AI strategy, implementation, and optimization for your business.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Benefits & Use Cases -->
+            <section class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <!-- Benefits -->
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                                <i data-lucide="check-circle" class="h-8 w-8 text-green-600 mr-3"></i>
+                                Key Benefits
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Automated decision-making processes</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Enhanced customer experiences through personalization</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Improved operational efficiency and cost reduction</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Advanced data analysis and pattern recognition</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Scalable AI solutions that grow with your business</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Competitive advantage through AI innovation</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Use Cases -->
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                                <i data-lucide="star" class="h-8 w-8 text-blue-600 mr-3"></i>
+                                Use Cases
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Customer service chatbots and virtual assistants</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Fraud detection and risk assessment</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Recommendation engines and personalization</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Supply chain optimization</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Quality control and defect detection</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Financial forecasting and analysis</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="py-20 bg-gradient-to-r from-blue-600 to-teal-600 text-white">
+                <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-4xl font-bold mb-6">Ready to Get Started?</h2>
+                    <p class="text-xl text-blue-100 mb-8 leading-relaxed">
+                        Let's discuss how our AI solutions can transform your business and drive growth.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button onclick="scrollToContact()" class="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-medium hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center space-x-2">
+                            <i data-lucide="users" class="h-5 w-5"></i>
+                            <span>Get AI Consultation</span>
+                        </button>
+                        
+                        <button onclick="showSection('home')" class="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-white hover:text-blue-600 transition-all duration-300 transform hover:-translate-y-1">
+                            View All Services
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Automation Service -->
+        <section id="automation-service" class="section hidden min-h-screen bg-gray-50 pt-16">
+            <!-- Hero Section -->
+            <section class="relative bg-gradient-to-r from-blue-600 to-teal-600 text-white py-20">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div 
+                    class="absolute inset-0 bg-cover bg-center opacity-20"
+                    style="background-image: url('https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?auto=compress&cs=tinysrgb&w=1200')"
+                ></div>
+                
+                <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <button onclick="showSection('home')" class="inline-flex items-center space-x-2 text-white/80 hover:text-white mb-8 transition-colors duration-200">
+                        <i data-lucide="arrow-left" class="h-4 w-4"></i>
+                        <span>Back to Home</span>
+                    </button>
+                    
+                    <div class="max-w-4xl">
+                        <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                            Intelligent Automation Solutions
+                        </h1>
+                        <p class="text-xl md:text-2xl text-blue-100 leading-relaxed">
+                            Boost operational efficiency with AI agents and robotic process automation that streamline workflows, reduce costs, and eliminate repetitive tasks.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="py-20 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl font-bold text-gray-900 mb-4">Key Features</h2>
+                        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                            Comprehensive automation solutions designed to meet your specific business requirements
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="bot" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">AI Agents</h3>
+                            <p class="text-gray-600 leading-relaxed">Intelligent software agents that can perform complex tasks autonomously.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="workflow" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Process Automation</h3>
+                            <p class="text-gray-600 leading-relaxed">Streamline repetitive tasks and workflows with robotic process automation.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="timer" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Scheduled Operations</h3>
+                            <p class="text-gray-600 leading-relaxed">Automated scheduling and execution of business-critical operations.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="bar-chart" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Performance Monitoring</h3>
+                            <p class="text-gray-600 leading-relaxed">Real-time monitoring and optimization of automated processes.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="cpu" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">System Integration</h3>
+                            <p class="text-gray-600 leading-relaxed">Seamless integration with existing systems and third-party applications.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="cog" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Custom Workflows</h3>
+                            <p class="text-gray-600 leading-relaxed">Tailored automation workflows designed for your specific business needs.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Benefits & Use Cases -->
+            <section class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <!-- Benefits -->
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                                <i data-lucide="check-circle" class="h-8 w-8 text-green-600 mr-3"></i>
+                                Key Benefits
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Reduced manual effort and human errors</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Increased operational efficiency by up to 80%</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Lower operational costs and improved ROI</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">24/7 automated operations without breaks</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Scalable automation that grows with demand</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Improved compliance and audit trails</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Use Cases -->
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                                <i data-lucide="star" class="h-8 w-8 text-blue-600 mr-3"></i>
+                                Use Cases
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Invoice processing and accounts payable automation</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Customer onboarding and KYC processes</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Data entry and migration tasks</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Report generation and distribution</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Inventory management and restocking</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Email processing and response automation</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="py-20 bg-gradient-to-r from-blue-600 to-teal-600 text-white">
+                <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-4xl font-bold mb-6">Ready to Get Started?</h2>
+                    <p class="text-xl text-blue-100 mb-8 leading-relaxed">
+                        Let's discuss how our automation solutions can transform your business and drive growth.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button onclick="scrollToContact()" class="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-medium hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center space-x-2">
+                            <i data-lucide="users" class="h-5 w-5"></i>
+                            <span>Automate Your Processes</span>
+                        </button>
+                        
+                        <button onclick="showSection('home')" class="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-white hover:text-blue-600 transition-all duration-300 transform hover:-translate-y-1">
+                            View All Services
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Cloud Service -->
+        <section id="cloud-service" class="section hidden min-h-screen bg-gray-50 pt-16">
+            <!-- Hero Section -->
+            <section class="relative bg-gradient-to-r from-blue-600 to-teal-600 text-white py-20">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div 
+                    class="absolute inset-0 bg-cover bg-center opacity-20"
+                    style="background-image: url('https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg?auto=compress&cs=tinysrgb&w=1200')"
+                ></div>
+                
+                <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <button onclick="showSection('home')" class="inline-flex items-center space-x-2 text-white/80 hover:text-white mb-8 transition-colors duration-200">
+                        <i data-lucide="arrow-left" class="h-4 w-4"></i>
+                        <span>Back to Home</span>
+                    </button>
+                    
+                    <div class="max-w-4xl">
+                        <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                            Cloud Migration & Management Services
+                        </h1>
+                        <p class="text-xl md:text-2xl text-blue-100 leading-relaxed">
+                            Leverage the power of cloud computing with expert migration services, infrastructure management, and optimization strategies for scalable, secure, and cost-effective solutions.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="py-20 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl font-bold text-gray-900 mb-4">Key Features</h2>
+                        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                            Comprehensive cloud solutions designed to meet your specific business requirements
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="cloud" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Cloud Migration</h3>
+                            <p class="text-gray-600 leading-relaxed">Seamless migration of applications and data to leading cloud platforms.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="server" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Infrastructure Management</h3>
+                            <p class="text-gray-600 leading-relaxed">Complete cloud infrastructure setup, monitoring, and maintenance.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="shield" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Security & Compliance</h3>
+                            <p class="text-gray-600 leading-relaxed">Enterprise-grade security with compliance to industry standards.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="gauge" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Performance Optimization</h3>
+                            <p class="text-gray-600 leading-relaxed">Continuous optimization for maximum performance and cost efficiency.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="dollar-sign" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Cost Management</h3>
+                            <p class="text-gray-600 leading-relaxed">Cloud cost optimization strategies to reduce infrastructure expenses.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="users" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">24/7 Support</h3>
+                            <p class="text-gray-600 leading-relaxed">Round-the-clock monitoring and support for your cloud infrastructure.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Benefits & Use Cases -->
+            <section class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <!-- Benefits -->
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                                <i data-lucide="check-circle" class="h-8 w-8 text-green-600 mr-3"></i>
+                                Key Benefits
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Scalable infrastructure that grows with your business</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Reduced IT infrastructure costs by up to 40%</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Enhanced security and disaster recovery capabilities</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Improved application performance and reliability</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Global accessibility and remote work enablement</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Automated backups and data protection</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Use Cases -->
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                                <i data-lucide="star" class="h-8 w-8 text-blue-600 mr-3"></i>
+                                Use Cases
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Enterprise application migration to cloud</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Hybrid cloud architecture implementation</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Cloud-native application development</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Disaster recovery and backup solutions</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Multi-cloud strategy and management</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">DevOps and CI/CD pipeline setup</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="py-20 bg-gradient-to-r from-blue-600 to-teal-600 text-white">
+                <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-4xl font-bold mb-6">Ready to Get Started?</h2>
+                    <p class="text-xl text-blue-100 mb-8 leading-relaxed">
+                        Let's discuss how our cloud solutions can transform your business and drive growth.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button onclick="scrollToContact()" class="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-medium hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center space-x-2">
+                            <i data-lucide="users" class="h-5 w-5"></i>
+                            <span>Start Cloud Migration</span>
+                        </button>
+                        
+                        <button onclick="showSection('home')" class="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-white hover:text-blue-600 transition-all duration-300 transform hover:-translate-y-1">
+                            View All Services
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Big Data Service -->
+        <section id="bigdata-service" class="section hidden min-h-screen bg-gray-50 pt-16">
+            <!-- Hero Section -->
+            <section class="relative bg-gradient-to-r from-blue-600 to-teal-600 text-white py-20">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div 
+                    class="absolute inset-0 bg-cover bg-center opacity-20"
+                    style="background-image: url('https://images.pexels.com/photos/590020/pexels-photo-590020.jpeg?auto=compress&cs=tinysrgb&w=1200')"
+                ></div>
+                
+                <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <button onclick="showSection('home')" class="inline-flex items-center space-x-2 text-white/80 hover:text-white mb-8 transition-colors duration-200">
+                        <i data-lucide="arrow-left" class="h-4 w-4"></i>
+                        <span>Back to Home</span>
+                    </button>
+                    
+                    <div class="max-w-4xl">
+                        <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                            Big Data & Hadoop Solutions
+                        </h1>
+                        <p class="text-xl md:text-2xl text-blue-100 leading-relaxed">
+                            Harness the power of big data with comprehensive Hadoop solutions that transform vast amounts of information into actionable insights for strategic business decisions.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="py-20 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl font-bold text-gray-900 mb-4">Key Features</h2>
+                        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                            Comprehensive big data solutions designed to meet your specific business requirements
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="database" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Hadoop Ecosystem</h3>
+                            <p class="text-gray-600 leading-relaxed">Complete Hadoop implementation with HDFS, MapReduce, and Spark integration.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="bar-chart-3" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Data Analytics</h3>
+                            <p class="text-gray-600 leading-relaxed">Advanced analytics and visualization tools for actionable business insights.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="zap" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Real-time Processing</h3>
+                            <p class="text-gray-600 leading-relaxed">Stream processing for real-time data analysis and immediate decision making.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="search" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Data Mining</h3>
+                            <p class="text-gray-600 leading-relaxed">Extract valuable patterns and knowledge from large datasets.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="trending-up" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Predictive Modeling</h3>
+                            <p class="text-gray-600 leading-relaxed">Build predictive models to forecast future trends and behaviors.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="cpu" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Distributed Computing</h3>
+                            <p class="text-gray-600 leading-relaxed">Leverage distributed computing power for processing massive datasets.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Benefits & Use Cases -->
+            <section class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <!-- Benefits -->
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                                <i data-lucide="check-circle" class="h-8 w-8 text-green-600 mr-3"></i>
+                                Key Benefits
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Process petabytes of data efficiently</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Gain actionable insights from complex data patterns</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Improve decision-making with data-driven strategies</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Reduce data processing time by up to 90%</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Scale horizontally to handle growing data volumes</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Cost-effective storage and processing solutions</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Use Cases -->
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                                <i data-lucide="star" class="h-8 w-8 text-blue-600 mr-3"></i>
+                                Use Cases
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Customer behavior analysis and segmentation</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Fraud detection and risk management</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Supply chain optimization and logistics</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Financial market analysis and trading</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Healthcare data analysis and research</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">IoT sensor data processing and analytics</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="py-20 bg-gradient-to-r from-blue-600 to-teal-600 text-white">
+                <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-4xl font-bold mb-6">Ready to Get Started?</h2>
+                    <p class="text-xl text-blue-100 mb-8 leading-relaxed">
+                        Let's discuss how our big data solutions can transform your business and drive growth.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button onclick="scrollToContact()" class="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-medium hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center space-x-2">
+                            <i data-lucide="users" class="h-5 w-5"></i>
+                            <span>Transform Your Data</span>
+                        </button>
+                        
+                        <button onclick="showSection('home')" class="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-white hover:text-blue-600 transition-all duration-300 transform hover:-translate-y-1">
+                            View All Services
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Low Code Service -->
+        <section id="lowcode-service" class="section hidden min-h-screen bg-gray-50 pt-16">
+            <!-- Hero Section -->
+            <section class="relative bg-gradient-to-r from-blue-600 to-teal-600 text-white py-20">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div 
+                    class="absolute inset-0 bg-cover bg-center opacity-20"
+                    style="background-image: url('https://images.pexels.com/photos/270348/pexels-photo-270348.jpeg?auto=compress&cs=tinysrgb&w=1200')"
+                ></div>
+                
+                <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <button onclick="showSection('home')" class="inline-flex items-center space-x-2 text-white/80 hover:text-white mb-8 transition-colors duration-200">
+                        <i data-lucide="arrow-left" class="h-4 w-4"></i>
+                        <span>Back to Home</span>
+                    </button>
+                    
+                    <div class="max-w-4xl">
+                        <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                            Low-Code/No-Code Development Platforms
+                        </h1>
+                        <p class="text-xl md:text-2xl text-blue-100 leading-relaxed">
+                            Accelerate your digital transformation with low-code and no-code development platforms that enable rapid application delivery, reduce costs, and foster collaboration between business and IT teams.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="py-20 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl font-bold text-gray-900 mb-4">Key Features</h2>
+                        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                            Comprehensive low-code solutions designed to meet your specific business requirements
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="code" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Visual Development</h3>
+                            <p class="text-gray-600 leading-relaxed">Drag-and-drop interface for rapid application development without coding.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="zap" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Rapid Deployment</h3>
+                            <p class="text-gray-600 leading-relaxed">Deploy applications 10x faster than traditional development methods.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="users" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Collaboration Tools</h3>
+                            <p class="text-gray-600 leading-relaxed">Enhanced collaboration between business users and IT teams.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="gauge" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Performance Optimization</h3>
+                            <p class="text-gray-600 leading-relaxed">Built-in performance optimization and scalability features.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="dollar-sign" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Cost Reduction</h3>
+                            <p class="text-gray-600 leading-relaxed">Significantly reduce development costs and time-to-market.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="smartphone" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Multi-platform</h3>
+                            <p class="text-gray-600 leading-relaxed">Create applications that work seamlessly across all devices and platforms.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Benefits & Use Cases -->
+            <section class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <!-- Benefits -->
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                                <i data-lucide="check-circle" class="h-8 w-8 text-green-600 mr-3"></i>
+                                Key Benefits
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Accelerate application delivery by up to 10x</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Reduce development costs by 70%</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Enable citizen developers to build applications</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Improve collaboration between business and IT</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Faster iteration and prototyping capabilities</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Lower maintenance and update overhead</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Use Cases -->
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                                <i data-lucide="star" class="h-8 w-8 text-blue-600 mr-3"></i>
+                                Use Cases
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Customer portal and self-service applications</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Internal workflow and approval systems</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Data collection and reporting tools</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Mobile applications for field workers</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Integration and API management platforms</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Prototype development and proof-of-concepts</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="py-20 bg-gradient-to-r from-blue-600 to-teal-600 text-white">
+                <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-4xl font-bold mb-6">Ready to Get Started?</h2>
+                    <p class="text-xl text-blue-100 mb-8 leading-relaxed">
+                        Let's discuss how our low-code solutions can transform your business and drive growth.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button onclick="scrollToContact()" class="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-medium hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center space-x-2">
+                            <i data-lucide="users" class="h-5 w-5"></i>
+                            <span>Start Building Apps</span>
+                        </button>
+                        
+                        <button onclick="showSection('home')" class="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-white hover:text-blue-600 transition-all duration-300 transform hover:-translate-y-1">
+                            View All Services
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Web Dev Service -->
+        <section id="webdev-service" class="section hidden min-h-screen bg-gray-50 pt-16">
+            <!-- Hero Section -->
+            <section class="relative bg-gradient-to-r from-blue-600 to-teal-600 text-white py-20">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div 
+                    class="absolute inset-0 bg-cover bg-center opacity-20"
+                    style="background-image: url('https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=1200')"
+                ></div>
+                
+                <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <button onclick="showSection('home')" class="inline-flex items-center space-x-2 text-white/80 hover:text-white mb-8 transition-colors duration-200">
+                        <i data-lucide="arrow-left" class="h-4 w-4"></i>
+                        <span>Back to Home</span>
+                    </button>
+                    
+                    <div class="max-w-4xl">
+                        <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                            Web & Mobile Application Development
+                        </h1>
+                        <p class="text-xl md:text-2xl text-blue-100 leading-relaxed">
+                            Create stunning, responsive web applications and mobile apps with modern technologies, exceptional user experience, and robust performance that drives business growth.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="py-20 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl font-bold text-gray-900 mb-4">Key Features</h2>
+                        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                            Comprehensive web development solutions designed to meet your specific business requirements
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="globe" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Modern Web Applications</h3>
+                            <p class="text-gray-600 leading-relaxed">Responsive, fast-loading web applications built with latest technologies.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="smartphone" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Mobile Development</h3>
+                            <p class="text-gray-600 leading-relaxed">Native and cross-platform mobile applications for iOS and Android.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="code" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Full-Stack Development</h3>
+                            <p class="text-gray-600 leading-relaxed">Complete frontend and backend development with modern frameworks.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="palette" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">UI/UX Design</h3>
+                            <p class="text-gray-600 leading-relaxed">Beautiful, intuitive user interfaces with exceptional user experience.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="search" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">SEO Optimization</h3>
+                            <p class="text-gray-600 leading-relaxed">Search engine optimized applications for maximum online visibility.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="shield" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Security & Performance</h3>
+                            <p class="text-gray-600 leading-relaxed">Secure, high-performance applications with robust architecture.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Benefits & Use Cases -->
+            <section class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <!-- Benefits -->
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                                <i data-lucide="check-circle" class="h-8 w-8 text-green-600 mr-3"></i>
+                                Key Benefits
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Responsive design that works on all devices</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Fast loading times and optimal performance</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">SEO-friendly architecture for better visibility</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Scalable applications that grow with your business</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Modern, intuitive user interfaces</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Cross-platform compatibility and accessibility</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Use Cases -->
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                                <i data-lucide="star" class="h-8 w-8 text-blue-600 mr-3"></i>
+                                Use Cases
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">E-commerce websites and online stores</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Corporate websites and portfolios</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Progressive web applications (PWAs)</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Mobile applications for business processes</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Content management systems</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Custom web portals and dashboards</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="py-20 bg-gradient-to-r from-blue-600 to-teal-600 text-white">
+                <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-4xl font-bold mb-6">Ready to Get Started?</h2>
+                    <p class="text-xl text-blue-100 mb-8 leading-relaxed">
+                        Let's discuss how our web development solutions can transform your business and drive growth.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button onclick="scrollToContact()" class="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-medium hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center space-x-2">
+                            <i data-lucide="users" class="h-5 w-5"></i>
+                            <span>Start Your Project</span>
+                        </button>
+                        
+                        <button onclick="showSection('home')" class="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-white hover:text-blue-600 transition-all duration-300 transform hover:-translate-y-1">
+                            View All Services
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Outsourcing Service -->
+        <section id="outsourcing-service" class="section hidden min-h-screen bg-gray-50 pt-16">
+            <!-- Hero Section -->
+            <section class="relative bg-gradient-to-r from-blue-600 to-teal-600 text-white py-20">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div 
+                    class="absolute inset-0 bg-cover bg-center opacity-20"
+                    style="background-image: url('https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1200')"
+                ></div>
+                
+                <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <button onclick="showSection('home')" class="inline-flex items-center space-x-2 text-white/80 hover:text-white mb-8 transition-colors duration-200">
+                        <i data-lucide="arrow-left" class="h-4 w-4"></i>
+                        <span>Back to Home</span>
+                    </button>
+                    
+                    <div class="max-w-4xl">
+                        <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                            Technology Outsourcing Services
+                        </h1>
+                        <p class="text-xl md:text-2xl text-blue-100 leading-relaxed">
+                            Augment your project teams with skilled professionals and accelerate delivery while reducing costs. Access global talent pool for specialized skills and expertise.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="py-20 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl font-bold text-gray-900 mb-4">Key Features</h2>
+                        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                            Comprehensive outsourcing solutions designed to meet your specific business requirements
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="users" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Skilled Professionals</h3>
+                            <p class="text-gray-600 leading-relaxed">Access to a pool of highly skilled developers, designers, and project managers.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="clock" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Flexible Engagement</h3>
+                            <p class="text-gray-600 leading-relaxed">Flexible engagement models to meet your project timeline and budget requirements.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="dollar-sign" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Cost Optimization</h3>
+                            <p class="text-gray-600 leading-relaxed">Significant cost savings compared to hiring full-time employees.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="globe" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Global Talent Pool</h3>
+                            <p class="text-gray-600 leading-relaxed">Access to international talent with diverse skills and expertise.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="trending-up" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Scalable Teams</h3>
+                            <p class="text-gray-600 leading-relaxed">Scale your team up or down based on project requirements.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="shield" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Quality Assurance</h3>
+                            <p class="text-gray-600 leading-relaxed">Rigorous quality control processes and project management standards.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Benefits & Use Cases -->
+            <section class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <!-- Benefits -->
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                                <i data-lucide="check-circle" class="h-8 w-8 text-green-600 mr-3"></i>
+                                Key Benefits
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Reduce development costs by up to 60%</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Access to specialized skills and expertise</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Faster project delivery and time-to-market</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Focus on core business while we handle development</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Flexible resource allocation and scaling</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">24/7 development cycles with global teams</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Use Cases -->
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                                <i data-lucide="star" class="h-8 w-8 text-blue-600 mr-3"></i>
+                                Use Cases
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Software development team augmentation</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Complete project outsourcing</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Specialized skill acquisition (AI, ML, DevOps)</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Maintenance and support services</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Quality assurance and testing teams</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">UI/UX design and development services</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="py-20 bg-gradient-to-r from-blue-600 to-teal-600 text-white">
+                <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-4xl font-bold mb-6">Ready to Get Started?</h2>
+                    <p class="text-xl text-blue-100 mb-8 leading-relaxed">
+                        Let's discuss how our outsourcing solutions can transform your business and drive growth.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button onclick="scrollToContact()" class="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-medium hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center space-x-2">
+                            <i data-lucide="users" class="h-5 w-5"></i>
+                            <span>Build Your Team</span>
+                        </button>
+                        
+                        <button onclick="showSection('home')" class="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-white hover:text-blue-600 transition-all duration-300 transform hover:-translate-y-1">
+                            View All Services
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- SAP Service -->
+        <section id="sap-service" class="section hidden min-h-screen bg-gray-50 pt-16">
+            <!-- Hero Section -->
+            <section class="relative bg-gradient-to-r from-blue-600 to-teal-600 text-white py-20">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div 
+                    class="absolute inset-0 bg-cover bg-center opacity-20"
+                    style="background-image: url('https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=1200')"
+                ></div>
+                
+                <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <button onclick="showSection('home')" class="inline-flex items-center space-x-2 text-white/80 hover:text-white mb-8 transition-colors duration-200">
+                        <i data-lucide="arrow-left" class="h-4 w-4"></i>
+                        <span>Back to Home</span>
+                    </button>
+                    
+                    <div class="max-w-4xl">
+                        <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                            SAP Development & Optimization
+                        </h1>
+                        <p class="text-xl md:text-2xl text-blue-100 leading-relaxed">
+                            Optimize your enterprise resource planning and streamline business operations with comprehensive SAP development, implementation, and support services.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="py-20 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl font-bold text-gray-900 mb-4">Key Features</h2>
+                        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                            Comprehensive SAP solutions designed to meet your specific business requirements
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="settings" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">SAP Implementation</h3>
+                            <p class="text-gray-600 leading-relaxed">Complete SAP system implementation and configuration for your business needs.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="bar-chart" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">ERP Optimization</h3>
+                            <p class="text-gray-600 leading-relaxed">Optimize your enterprise resource planning for maximum efficiency.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="users" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">User Training</h3>
+                            <p class="text-gray-600 leading-relaxed">Comprehensive training programs for your team to maximize SAP utilization.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="zap" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Process Automation</h3>
+                            <p class="text-gray-600 leading-relaxed">Automate business processes within SAP for improved productivity.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="shield" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Security & Compliance</h3>
+                            <p class="text-gray-600 leading-relaxed">Ensure data security and regulatory compliance in your SAP environment.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-teal-50 p-8 rounded-2xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                            <div class="bg-gradient-to-r from-blue-600 to-teal-600 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
+                                <i data-lucide="cog" class="h-8 w-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Custom Development</h3>
+                            <p class="text-gray-600 leading-relaxed">Custom SAP modules and integrations tailored to your specific requirements.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Benefits & Use Cases -->
+            <section class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <!-- Benefits -->
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                                <i data-lucide="check-circle" class="h-8 w-8 text-green-600 mr-3"></i>
+                                Key Benefits
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Streamlined business processes and operations</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Improved data visibility and reporting</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Enhanced decision-making with real-time insights</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Reduced operational costs and improved efficiency</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Better compliance and risk management</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-green-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="check-circle" class="h-4 w-4 text-green-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Scalable solution that grows with your business</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Use Cases -->
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                                <i data-lucide="star" class="h-8 w-8 text-blue-600 mr-3"></i>
+                                Use Cases
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Financial management and accounting</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Supply chain and procurement optimization</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Human resources and payroll management</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Customer relationship management</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Inventory and warehouse management</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-100 p-1 rounded-full mt-1">
+                                        <i data-lucide="star" class="h-4 w-4 text-blue-600"></i>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">Business intelligence and analytics</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="py-20 bg-gradient-to-r from-blue-600 to-teal-600 text-white">
+                <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-4xl font-bold mb-6">Ready to Get Started?</h2>
+                    <p class="text-xl text-blue-100 mb-8 leading-relaxed">
+                        Let's discuss how our SAP solutions can transform your business and drive growth.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button onclick="scrollToContact()" class="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-medium hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center space-x-2">
+                            <i data-lucide="users" class="h-5 w-5"></i>
+                            <span>Optimize Your ERP</span>
+                        </button>
+                        
+                        <button onclick="showSection('home')" class="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-white hover:text-blue-600 transition-all duration-300 transform hover:-translate-y-1">
+                            View All Services
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Contact Information -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-8">
+                        <div class="bg-gradient-to-r from-blue-600 to-teal-600 p-2 rounded-lg">
+                            <i data-lucide="zap" class="h-6 w-6 text-white"></i>
+                        </div>
+                        <span class="text-2xl font-bold">Tech TacTix</span>
+                    </div>
+
+                    <p class="text-gray-300 mb-8 leading-relaxed">
+                        Accelerating digital transformation with innovative AI-powered solutions 
+                        and advanced technology services. Helping businesses grow confidently 
+                        in a competitive landscape.
+                    </p>
+
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="phone" class="h-5 w-5 text-blue-400"></i>
+                            <span class="text-gray-300">+91 8197342168</span>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="mail" class="h-5 w-5 text-blue-400"></i>
+                            <span class="text-gray-300">contact@tactixind.com</span>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="map-pin" class="h-5 w-5 text-blue-400"></i>
+                            <span class="text-gray-300">Bengaluru, Karnataka</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-6">Get In Touch</h3>
+                    <form id="contact-form" class="space-y-6">
+                        <div>
+                            <input
+                                type="text"
+                                name="name"
+                                placeholder="Your Name"
+                                required
+                                class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
+                            />
+                        </div>
+
+                        <div>
+                            <input
+                                type="tel"
+                                name="phone"
+                                placeholder="Phone Number"
+                                required
+                                class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
+                            />
+                        </div>
+
+                        <div>
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="Email Address"
+                                required
+                                class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
+                            />
+                        </div>
+
+                        <div>
+                            <textarea
+                                name="comments"
+                                placeholder="Your Message"
+                                rows="4"
+                                required
+                                class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400 resize-none"
+                            ></textarea>
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="w-full bg-gradient-to-r from-blue-600 to-teal-600 text-white py-3 px-6 rounded-lg font-medium hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5 flex items-center justify-center space-x-2"
+                        >
+                            <i data-lucide="send" class="h-4 w-4"></i>
+                            <span>Send Message</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-gray-400">
+                    © 2024 Tech TacTix. All rights reserved. Founded in 2024.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('mobile-menu-icon');
+            
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+                menuIcon.setAttribute('data-lucide', 'x');
+            } else {
+                mobileMenu.classList.add('hidden');
+                menuIcon.setAttribute('data-lucide', 'menu');
+            }
+            lucide.createIcons();
+        }
+
+        // Section navigation
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show the selected section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Smooth scrolling functions
+        function scrollToServices() {
+            if (document.getElementById('home').classList.contains('hidden')) {
+                showSection('home');
+                setTimeout(() => {
+                    document.getElementById('services').scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            } else {
+                document.getElementById('services').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function scrollToAbout() {
+            if (document.getElementById('home').classList.contains('hidden')) {
+                showSection('home');
+                setTimeout(() => {
+                    document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            } else {
+                document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function scrollToClients() {
+            if (document.getElementById('home').classList.contains('hidden')) {
+                showSection('home');
+                setTimeout(() => {
+                    document.getElementById('clients').scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            } else {
+                document.getElementById('clients').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function scrollToContact() {
+            if (document.getElementById('home').classList.contains('hidden')) {
+                showSection('home');
+                setTimeout(() => {
+                    document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            } else {
+                document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Success popup functions
+        function showSuccessPopup() {
+            const popup = document.getElementById('success-popup');
+            popup.classList.add('show');
+        }
+
+        function closeSuccessPopup() {
+            const popup = document.getElementById('success-popup');
+            popup.classList.remove('show');
+        }
+
+        // Contact form submission
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const name = formData.get('name');
+            const phone = formData.get('phone');
+            const email = formData.get('email');
+            const comments = formData.get('comments');
+            
+            // Create mailto link
+            const subject = encodeURIComponent('Contact Form Submission - Tech TacTix');
+            const body = encodeURIComponent(`
+Name: ${name}
+Phone: ${phone}
+Email: ${email}
+
+Comments:
+${comments}
+            `);
+            
+            const mailtoLink = `mailto:contact@tactixind.com?subject=${subject}&body=${body}`;
+            window.location.href = mailtoLink;
+            
+            // Show success popup
+            showSuccessPopup();
+            
+            // Reset form
+            this.reset();
+        });
+
+        // Close popup when clicking outside
+        document.getElementById('success-popup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeSuccessPopup();
+            }
+        });
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            showSection('home');
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
